@@ -1,0 +1,38 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://GameIcon.tscn" type="PackedScene" id=1]
+
+[node name="Alpha Sector" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+zoom = Vector2( 0.5, 0.5 )
+
+[node name="Freighter" parent="." instance=ExtResource( 1 )]
+self_modulate = Color( 0.545098, 1, 0.615686, 1 )
+position = Vector2( -38.8906, -57.2999 )
+frame = 17
+
+[node name="Miner" parent="." instance=ExtResource( 1 )]
+position = Vector2( 27.4332, 13.413 )
+frame = 16
+
+[node name="HighEnd" parent="." instance=ExtResource( 1 )]
+position = Vector2( -164.263, 40.3683 )
+frame = 3
+
+[node name="Intermediate" parent="." instance=ExtResource( 1 )]
+position = Vector2( 129.421, -95.4211 )
+frame = 2
+
+[node name="Refined" parent="." instance=ExtResource( 1 )]
+position = Vector2( 114.418, 25.1572 )
+frame = 1
+
+[node name="Warpgate" parent="." instance=ExtResource( 1 )]
+self_modulate = Color( 0.392157, 0.392157, 0.392157, 1 )
+position = Vector2( 0, -116.854 )
+
+[node name="Shipyard" parent="." instance=ExtResource( 1 )]
+position = Vector2( -40.6608, 93.3338 )
+frame = 4
