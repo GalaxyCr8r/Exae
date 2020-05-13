@@ -41,3 +41,11 @@ func isSatisfiedBy(dict:Dictionary) -> bool:
 	
 	# If we got here, then all requirements were satsified!
 	return true
+
+func getAllRequired() -> Dictionary:
+	validate()
+	
+	var newDict = {}
+	for i in range(0, requiredWares.size()):
+		newDict[requiredWares[i]] = requiredAmt[i]
+	return newDict

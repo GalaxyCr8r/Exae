@@ -7,9 +7,9 @@ export var cargoSpaceMetersCubed : int = 1000
 
 var _produces:R_Ware
 onready var health := startingHealth
-var cargo = {}
+var cargo = {"Energy Cubes":50}
 var currentWork : int = -1
-var currentCargoSpaceMC : int = 0
+var currentCargoSpaceMC : int = 50
 
 func _ready():
 	if is_instance_valid(produces) and typeof(produces) != typeof(R_Ware):
@@ -36,9 +36,15 @@ func tick():
 		
 		if currentWork >= _produces.timeToProduceSec:
 			currentWork = -1
-			addCargo(_produces.name, _produces.volumePerUnitMetersCubed, 1)
-			print("Production happened!!!")
-			print(String(cargo))
+			var tmpCargo = cargo
+			if removeAllWaresFromCargo(_produces.getAllRequired()) >= 0:
+				if addCargo(_produces.name, _produces.volumePerUnitMetersCubed, 1) >= 0 :
+					print("Production happened!!!")
+				else:
+					cargo=tmpCargo
+					print(String(cargo))
+			else:
+				cargo=tmpCargo
 
 """ Attempts to add cargo safely.
 Returns -1 if given irrational arguments.
@@ -65,6 +71,7 @@ func addCargo(cargoName, cargoVolume, cargoAmount):
 	print("New current cargo space: "+String(currentCargoSpaceMC))
 	if $Label:
 		$Label.text = String(cargo)
+	return 0
 
 """ Attempts to remove cargo safely.
 Returns -1 if given irrational arguments.
@@ -94,4 +101,14 @@ func removeCargo(cargoName, cargoVolume, cargoAmount):
 	else:
 		print("ERROR: Something stupid happened.")
 		return -3
+	return 0
 	
+func removeAllWaresFromCargo(cargoDict : Dictionary):
+	var ret
+	
+	for key in cargoDict:
+		var ware:R_Ware = key
+		ret = removeCargo(ware.name, ware.volumePerUnitMetersCubed, cargoDict[key])
+		if ret < 0:
+			return ret
+	return 0

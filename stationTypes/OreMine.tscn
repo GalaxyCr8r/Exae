@@ -14,3 +14,14 @@ hframes = 8
 script = ExtResource( 2 )
 produces = ExtResource( 1 )
 cargoSpaceMetersCubed = 5000
+
+[node name="Label" type="Label" parent="."]
+margin_left = 10.0
+margin_top = -5.0
+margin_right = 95.0
+margin_bottom = 25.0
+rect_scale = Vector2( 0.5, 0.5 )
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
