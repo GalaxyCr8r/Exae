@@ -1,0 +1,15 @@
+[gd_resource type="Resource" load_steps=4 format=2]
+
+[ext_resource path="res://wareTypes/R_Ware.gd" type="Script" id=1]
+[ext_resource path="res://wareTypes/R_Ore.tres" type="Resource" id=2]
+[ext_resource path="res://wareTypes/R_EnergyCubes.tres" type="Resource" id=3]
+
+[resource]
+script = ExtResource( 1 )
+name = "Sheet Metal"
+type = 0
+timeToProduceSec = 2.0
+volumePerUnitMetersCubed = 20.0
+requiredWares = [ ExtResource( 2 ), ExtResource( 3 ) ]
+requiredAmt = [ 2, 10 ]
+warePrice = Vector2( 25, 200 )

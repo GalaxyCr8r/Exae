@@ -9,19 +9,31 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "Resource",
-"class": "Ware",
+"base": "Sprite",
+"class": "ObjShip",
 "language": "GDScript",
-"path": "res://wareTypes/Ware.gd"
+"path": "res://ObjShip.gd"
+}, {
+"base": "Sprite",
+"class": "ObjStation",
+"language": "GDScript",
+"path": "res://ObjStation.gd"
+}, {
+"base": "Resource",
+"class": "R_Ware",
+"language": "GDScript",
+"path": "res://wareTypes/R_Ware.gd"
 } ]
 _global_script_class_icons={
-"Ware": ""
+"ObjShip": "",
+"ObjStation": "",
+"R_Ware": ""
 }
 
 [application]
 
 config/name="Exae"
-run/main_scene="res://Alpha Sector.tscn"
+run/main_scene="res://NullSector.tscn"
 boot_splash/bg_color=Color( 0, 0, 0, 1 )
 config/icon="res://icon.png"
 

@@ -1,0 +1,34 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://stationTypes/OreMine.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Timer.gd" type="Script" id=2]
+[ext_resource path="res://stationTypes/SolarPowerPlant.tscn" type="PackedScene" id=3]
+[ext_resource path="res://stationTypes/MetalRefinery.tscn" type="PackedScene" id=4]
+
+[node name="NullSector" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+zoom = Vector2( 0.5, 0.5 )
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+position = Vector2( -180.684, -113.043 )
+color = Color( 1, 0, 0, 0.501961 )
+polygon = PoolVector2Array( -135.666, -43.7736, 25.3044, -90.4152, 138.727, -29.8836, 69.6963, 64.6279, -53.0759, 76.6734, -4.8936, 13.2025 )
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+script = ExtResource( 2 )
+
+[node name="OreMine" parent="." instance=ExtResource( 1 )]
+position = Vector2( -34.9073, -60.798 )
+
+[node name="SolarPowerPlant" parent="." instance=ExtResource( 3 )]
+position = Vector2( -124.742, 40.8437 )
+
+[node name="MetalRefinery" parent="." instance=ExtResource( 4 )]
+position = Vector2( 98.5616, -7.92377 )
+
+[node name="SolarPowerPlant2" parent="." instance=ExtResource( 3 )]
+position = Vector2( 60.9248, -85.1008 )
+[connection signal="timeout" from="Timer" to="Timer" method="_on_Timer_timeout"]
