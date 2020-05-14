@@ -23,6 +23,9 @@ The overview of the economy looks like:
 
 Generally, stations that produce one type of good, requires goods above it. Raw goods are generated from the environment.
 
+Goods that are higher tier should require the product of at least two stations below it. (i.e. a Metal Refinery would take two Ore Mines to fully supply it..)
+This will mean that the highest tier is always desiring resources.
+
 ### Station Types
 
 Most stations produce one type of good, however there are types of special stations that don't produce wares.

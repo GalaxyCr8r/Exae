@@ -6,6 +6,7 @@
 [node name="ObjStation" type="Sprite" groups=[
 "stations",
 "targetable",
+"tickable",
 ]]
 texture = ExtResource( 1 )
 vframes = 8
