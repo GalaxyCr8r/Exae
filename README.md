@@ -1,5 +1,5 @@
 # EXAE
-![EXAE](https://github.com/Galaxy613/Exae/master/icon.png "EXAE Logo")
+![EXAE](/icon.png "EXAE Logo")
 
 Inspired by the X-Series by Egosoft.
 This is just a gameplay prototype for managing a trading empire with/against AI controlled trading empires.
