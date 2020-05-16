@@ -20,6 +20,7 @@ margin_left = 9.0
 margin_top = -7.0
 margin_right = 87.0
 margin_bottom = 25.0
+rect_scale = Vector2( 0.5, 0.5 )
 autowrap = true
 __meta__ = {
 "_edit_use_anchors_": false
