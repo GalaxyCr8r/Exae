@@ -8,8 +8,8 @@ export var cargoSpaceMetersCubed : int = 1000
 var _produces:R_Ware
 onready var health := startingHealth
 var cargo : Dictionary = {"Energy Cubes":150}
-var currentWork : int = -1
 var currentCargoSpaceMC : int = 150
+var currentWork : int = -1
 
 var currentSellPrice : int = -1
 var requiredBuyPrice : Array = [] ### Array index' should match the array index of the ware's requirements
@@ -159,12 +159,14 @@ func removeCargo(cargoName:String, cargoVolume:int, cargoAmount:int) -> int:
 		return -3
 	return 0
 	
+""" Removes from our cargo the contents of the given dictionary. Is atomic. """
 func removeAllWaresFromCargo(cargoDict : Dictionary):
 	var ret
-	
+	var cargoBackup = cargo
 	for key in cargoDict:
 		var ware:R_Ware = key
 		ret = removeCargo(ware.name, ware.volumePerUnitMetersCubed, cargoDict[key])
 		if ret < 0:
+			cargo = cargoBackup
 			return ret
 	return 0
