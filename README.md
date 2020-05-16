@@ -1,6 +1,8 @@
 # EXAE
+![EXAE](/icon.png "EXAE Logo")
 
 Inspired by the X-Series by Egosoft.
+This is just a gameplay prototype for managing a trading empire with/against AI controlled trading empires.
 
 ## Gameplay
 
@@ -89,6 +91,14 @@ There will only be a few types of ships at the beginning:
 * Freighter
 * Builder
 * Battleship
+
+Freighters will most likely be broken up into multiple AI focui:
+* Energy Traders
+* Ore Traders
+* Raw Goods Traders
+* Intermediate Traders
+And so on. Having a single AI to service all the stations will make the AI extremely unwieldly and
+will most likely cause some very bad gaps in the economy if they all decide to do one thing.
 
 ## Sectors
 
