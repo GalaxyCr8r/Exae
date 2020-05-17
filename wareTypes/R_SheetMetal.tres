@@ -8,8 +8,8 @@
 script = ExtResource( 1 )
 name = "Sheet Metal"
 type = 0
-timeToProduceSec = 2.0
+timeToProduceSec = 9.0
 volumePerUnitMetersCubed = 5
 requiredWares = [ ExtResource( 2 ), ExtResource( 3 ) ]
-requiredAmt = [ 2, 10 ]
+requiredAmt = [ 2, 11 ]
 warePrice = Vector2( 25, 200 )

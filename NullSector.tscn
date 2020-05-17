@@ -21,29 +21,27 @@ polygon = PoolVector2Array( -135.666, -43.7736, 25.3044, -90.4152, 138.727, -29.
 autostart = true
 script = ExtResource( 2 )
 
-[node name="OreMine" parent="." groups=[
-"tickable",
-] instance=ExtResource( 1 )]
+[node name="OreMine" parent="." instance=ExtResource( 1 )]
 position = Vector2( -34.9073, -60.798 )
 
-[node name="SolarPowerPlant" parent="." groups=[
-"tickable",
-] instance=ExtResource( 3 )]
-position = Vector2( -124.742, 40.8437 )
+[node name="SolarPowerPlant" parent="." instance=ExtResource( 3 )]
+position = Vector2( -136.09, 86.2338 )
 
-[node name="MetalRefinery" parent="." groups=[
-"tickable",
-] instance=ExtResource( 4 )]
-position = Vector2( 98.5616, -7.92377 )
+[node name="MetalRefinery" parent="." instance=ExtResource( 4 )]
+position = Vector2( 23.4518, 56.3789 )
 
-[node name="SolarPowerPlant2" parent="." groups=[
-"tickable",
-] instance=ExtResource( 3 )]
+[node name="SolarPowerPlant2" parent="." instance=ExtResource( 3 )]
 position = Vector2( 60.9248, -85.1008 )
 
 [node name="Freighter" parent="." instance=ExtResource( 5 )]
-position = Vector2( -46.031, 79.5519 )
+position = Vector2( -96.2844, 68.7447 )
 
 [node name="Freighter2" parent="." instance=ExtResource( 5 )]
 position = Vector2( 59.3066, -53.5831 )
+
+[node name="OreMine2" parent="." instance=ExtResource( 1 )]
+position = Vector2( 170.538, 114.738 )
+
+[node name="OreMine3" parent="." instance=ExtResource( 1 )]
+position = Vector2( -242.296, -135.989 )
 [connection signal="timeout" from="Timer" to="Timer" method="_on_Timer_timeout"]

@@ -7,6 +7,7 @@
 [node name="MetalRefinery" type="Sprite" groups=[
 "stations",
 "targetable",
+"tickable",
 ]]
 texture = ExtResource( 3 )
 vframes = 8
@@ -14,6 +15,7 @@ hframes = 8
 frame = 1
 script = ExtResource( 2 )
 produces = ExtResource( 1 )
+cargoSpaceMetersCubed = 2000
 
 [node name="Label" type="Label" parent="."]
 margin_left = 9.0

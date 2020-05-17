@@ -54,7 +54,9 @@ func findClosestStation() -> ObjStation:
 		if entity.is_in_group("stations"):
 			if destination != null:
 				if entity == destination:
+					# Don't pick a station we are already at.
 					continue
+			
 			if !targetStation:
 				targetStation = entity
 			else:
@@ -64,3 +66,50 @@ func findClosestStation() -> ObjStation:
 		print("WARNING: Couldn't find any stations in-sector.")
 	return targetStation
 
+func findCheapestStation(wareName:String):
+	var targetStation = null
+	var entity:Node2D
+	var cheapestPrice : int = 99999999
+	for entity in get_parent().get_children():
+		if entity.is_in_group("stations"):
+			var station : ObjStation = entity
+			if destination != null:
+				if entity == destination:
+					continue
+			
+			if station._produces.name != wareName or station.currentSellPrice > cheapestPrice:
+				continue
+			
+			cheapestPrice = station.currentSellPrice
+			targetStation = entity
+	if !targetStation:
+		print("WARNING: Couldn't find any stations in-sector.")
+	return targetStation
+
+""" Find a station that needs one of our wares. """
+func findStationWithBestDeal(wareName:String):
+	var targetStation = null
+	var entity:Node2D
+	var bestPrice : int = 1
+	## TODO This really should be set to the lowest price of the ware plus some buffer OR the highest price this ware was bought at.
+	## That way this freigher wouldn't sell at a loss.
+	
+	# Find the station with the highest buy price for our ware.
+	for entity in get_parent().get_children():
+		if entity.is_in_group("stations"):
+			var station : ObjStation = entity
+			if destination != null:
+				if entity == destination:
+					continue
+			
+			# Put these values in variable to help with debugging
+			var requiresThis : bool = station.requiresThisWareName(wareName)
+			var currentPrice : int = station.getBuyPriceName(wareName) ##### TODO, current the AI is not selling eCubes to stations that need it most.
+			if !requiresThis or currentPrice < bestPrice:
+				continue
+			
+			bestPrice = station.currentSellPrice
+			targetStation = entity
+	if !targetStation:
+		print("WARNING: Couldn't find any stations in-sector.")
+	return targetStation

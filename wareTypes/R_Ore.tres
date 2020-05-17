@@ -10,5 +10,5 @@ type = 1
 timeToProduceSec = 5.0
 volumePerUnitMetersCubed = 10
 requiredWares = [ ExtResource( 2 ) ]
-requiredAmt = [ 10 ]
+requiredAmt = [ 6 ]
 warePrice = Vector2( 10, 50 )

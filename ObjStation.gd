@@ -64,6 +64,9 @@ uu   uu tt    iii lll iii tt     yyyyyy
 								 yyyyy 
 #############################################################################"""
 
+func hasWareToSell() -> bool:
+	return getProducedWareAmount() > 1
+
 func getProducedWareAmount() -> int:
 	return cargoBay.wareAmount(_produces)
 
@@ -76,16 +79,55 @@ func getWareVolume(ware:R_Ware) -> int:
 	
 	return cargoBay.wareAmount(ware) * ware.volumePerUnitMetersCubed
 
+func requiresThisWare(ware:R_Ware) -> bool:
+	return requiresThisWareName(ware.name)
+func requiresThisWareName(wareName:String) -> bool:
+	for i in range(0, requiredBuyPrice.size()):
+		var ware : R_Ware = _produces.requiredWares[i]
+		if ware.name == wareName:
+			return true
+	return false
+
+func getBuyPrice(ware:R_Ware) -> int:
+	return getBuyPriceName(ware.name)
+func getBuyPriceName(wareName:String) -> int:
+	for i in range(0, requiredBuyPrice.size()):
+		var ware : R_Ware = _produces.requiredWares[i]
+		if ware.name == wareName:
+			return requiredBuyPrice[i]
+	return -1
+
+func pickRandomRequiredWare() -> R_Ware:
+	if requiredBuyPrice.size() == 0:
+		return null
+	if requiredBuyPrice.size() == 1:
+		return _produces.requiredWares[0]
+	return _produces.requiredWares[randi() % requiredBuyPrice.size()]
+
+func mostNeededRequiredWare() -> R_Ware:
+	var ret : R_Ware = null
+	var bestRatio : float = 1.1
+	
+	### Go through each ware type and decide which is most needed based on ratio
+	for i in range(0, requiredBuyPrice.size()):
+		var ware : R_Ware = _produces.requiredWares[i]
+		var ratio : float = getWareVolume(ware) / float(cargoBay.maxSpaceMC)
+		if ratio < bestRatio:
+			ret = ware
+			bestRatio = ratio
+	
+	return ret
+
 func updateWarePrice():
 	updateSellPrice()
 	updateBuyPrice()
 
 func updateSellPrice():
 	### Calculate the ratio of produced wares to cargo size of the station
-	var ratio : float = getProducedWareVolume() / float(cargoBay.cargoSpaceMetersCubed)
+	var ratio : float = getProducedWareVolume() / float(cargoBay.maxSpaceMC)
 	### Then calculate how much we should sell it for - the more, the less cost.
 	currentSellPrice = _produces.getAdjustedSellPrice(ratio)
-	print(String(getProducedWareVolume())+" / "+String(float(cargoBay.cargoSpaceMetersCubed)))
+	print(String(getProducedWareVolume())+" / "+String(float(cargoBay.maxSpaceMC)))
 	print(_produces.name + " - ratio: " +String(ratio)+ " : " + String(currentSellPrice))
 	
 	$Label.text = String(currentSellPrice) + "c\n" + String(cargoBay.cargo)
@@ -94,7 +136,7 @@ func updateBuyPrice():
 	### Go through each ware type and update the buy price for it.
 	for i in range(0, requiredBuyPrice.size()):
 		var ware : R_Ware = _produces.requiredWares[i]
-		var ratio : float = getWareVolume(ware) / float(cargoBay.cargoSpaceMetersCubed)
+		var ratio : float = getWareVolume(ware) / float(cargoBay.maxSpaceMC)
 		requiredBuyPrice[i] = ware.getAdjustedBuyPrice(ratio)
 
 func requires(ware:R_Ware) -> bool:

@@ -20,20 +20,50 @@ func _ready():
 	cargoBay.debugLabel = $Label
 
 func tick():
+	var destStation : ObjStation = destination
+	var tmpStat : ObjStation = null
+	#var ware : R_Ware = null
+	var wareName : String = ""
+	
 	if state == ShipState.SEARCHING:
-		### Find a station to trade with that isn't within 10 units of us. TODO
-		var tmpStat = findNewStationToSellTo()
+		### Search for deals!
+		if destStation != null:
+			### Buy as much as I can that this station produces 
+			#   but only IF you can find a place to sell to.
+			#tmpStat = findNewStationToSellTo()
+			tmpStat = findStationWithBestDeal(destStation._produces.name)
+			if destStation.hasWareToSell() and tmpStat != null:
+				buyFromStation(destStation)
+				destination = tmpStat
+				state = ShipState.GOING_TO_DEAL
+				return
+			
+			### Otherwise, try to find the most needed ware to supply this station.
+			var tmpWare:R_Ware = destStation.mostNeededRequiredWare()
+			# And sometimes, pick a random ware instead
+			if randi() % 10 < 5:
+				tmpWare = destStation.pickRandomRequiredWare()
+			
+			if tmpWare != null:
+				wareName = tmpWare.name
+				tmpStat = findCheapestStation(wareName)
+		
+		# Pick a random ware in our inventory to sell
+		if wareName == "":
+			wareName = cargoBay.getRandomWareName()
+			if wareName != "":
+				tmpStat = findStationWithBestDeal(wareName)
+		
+		if tmpStat == null:
+			# Just find the closest station.
+			tmpStat = findClosestStation()
+		
 		if tmpStat != null:
+			# If we found a station to buy or sell at, go to it!
 			destination = tmpStat
 			state = ShipState.GOING_TO_DEAL
 		else:
-			### Try to find a ware at the current station that is needed and try to buy it.
-			tmpStat = findClosestStation()
-			if tmpStat != null:
-				destination = tmpStat
-				state = ShipState.GOING_TO_DEAL
-			else:
-				print("WARNING: Cannot find place to sell!")
+			print("WARNING: Cannot find place to sell!") # Currently this should never happen.
 
 func arrivedAtDestination():
 	var destStation : ObjStation = destination
@@ -42,8 +72,6 @@ func arrivedAtDestination():
 		### Try to sell as much as possible to empty out the cargobay so we can buy the max we can. TODO
 		sellCargoToStation(destStation)
 		
-		### Buy as much as I can that this station produces.
-		buyFromStation(destStation)
 		
 		### Find a station to sell this cargo at for max profits.TODO
 		pass
@@ -66,6 +94,7 @@ func sellCargoToStation(destStation:ObjStation):
 				### SELL IT! TODO Make it smarter, this will currently fail if the station can't buy all of it.
 				if destStation.cargoBay.addWare(reqWare, cargoBay.wareNameAmount(wareName)) >= 0:
 					cargoBay.removeWare(reqWare, cargoBay.wareNameAmount(wareName))
+					destStation.updateWarePrice()
 
 func buyFromStation(destStation:ObjStation):
 	var amtOfProducedWareAvailable = destStation.getProducedWareAmount()
@@ -82,11 +111,15 @@ func buyFromStation(destStation:ObjStation):
 			### Buy them! TODO
 			destStation.cargoBay.removeWare(destStation._produces, totalPossibleWaresToBuy)
 			cargoBay.addWare(destStation._produces, totalPossibleWaresToBuy)
+			destStation.updateWarePrice()
 	pass
 
 func findNewStationToSellTo():
-	### Find a station that needs the ware we just purchased
 	### Its assumed that whomever calls this actually HAS the ware that destination._produces!
+	#if !cargoBay.has(destination._produces):
+		#return
+		
+	### Find a station that needs the ware we just purchased
 	var targetStation = null
 	var entity:Node2D
 	for entity in get_parent().get_children():

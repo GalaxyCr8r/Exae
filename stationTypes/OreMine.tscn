@@ -7,13 +7,13 @@
 [node name="OreMine" type="Sprite" groups=[
 "stations",
 "targetable",
+"tickable",
 ]]
 texture = ExtResource( 3 )
 vframes = 8
 hframes = 8
 script = ExtResource( 2 )
 produces = ExtResource( 1 )
-cargoSpaceMetersCubed = 5000
 
 [node name="Label" type="Label" parent="."]
 margin_left = 10.0
