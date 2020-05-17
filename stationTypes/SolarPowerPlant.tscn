@@ -13,6 +13,7 @@ vframes = 8
 hframes = 8
 script = ExtResource( 1 )
 produces = ExtResource( 3 )
+cargoSpaceMetersCubed = 500
 
 [node name="Label" type="Label" parent="."]
 margin_left = 10.0

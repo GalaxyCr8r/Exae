@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Object",
+"class": "CargoBay",
+"language": "GDScript",
+"path": "res://cargoBay.gd"
+}, {
 "base": "Sprite",
 "class": "ObjShip",
 "language": "GDScript",
@@ -25,6 +30,7 @@ _global_script_classes=[ {
 "path": "res://wareTypes/R_Ware.gd"
 } ]
 _global_script_class_icons={
+"CargoBay": "",
 "ObjShip": "",
 "ObjStation": "",
 "R_Ware": ""

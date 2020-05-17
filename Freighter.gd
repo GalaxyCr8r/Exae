@@ -16,6 +16,8 @@ func _ready():
 	else:
 		destination = targetStation
 		state = ShipState.GOING_TO_DEAL
+	
+	cargoBay.debugLabel = $Label
 
 func tick():
 	if state == ShipState.SEARCHING:
@@ -57,13 +59,13 @@ func arrivedAtDestination():
 
 func sellCargoToStation(destStation:ObjStation):
 	### Check every ware in our cargo to see if its a required ware of the station.
-	for wareName in cargo:
+	for wareName in cargoBay.cargo:
 		for i in range(0, destStation._produces.requiredWares.size()):
 			var reqWare:R_Ware = destStation._produces.requiredWares[i]
 			if reqWare.name == wareName:
 				### SELL IT! TODO Make it smarter, this will currently fail if the station can't buy all of it.
-				if destStation.addCargoWare(reqWare, cargo[wareName]) >= 0:
-					removeCargoWare(reqWare, cargo[wareName])
+				if destStation.cargoBay.addWare(reqWare, cargoBay.wareNameAmount(wareName)) >= 0:
+					cargoBay.removeWare(reqWare, cargoBay.wareNameAmount(wareName))
 
 func buyFromStation(destStation:ObjStation):
 	var amtOfProducedWareAvailable = destStation.getProducedWareAmount()
@@ -71,16 +73,15 @@ func buyFromStation(destStation:ObjStation):
 	if amtOfProducedWareAvailable > 0:
 		### If it's close to max price, go to a different station TODO
 		### See how much we can buy to fill up our cargo.
-		var totalSpaceAvailableMC = cargoSpaceMetersCubed - currentCargoSpaceMC
-		var totalPossibleWaresToBuy = totalSpaceAvailableMC / destStation._produces.volumePerUnitMetersCubed
+		var totalPossibleWaresToBuy = cargoBay.spaceAvailable() / destStation._produces.volumePerUnitMetersCubed
 		
 		if totalPossibleWaresToBuy > amtOfProducedWareAvailable:
 			totalPossibleWaresToBuy = amtOfProducedWareAvailable
 		
 		if totalPossibleWaresToBuy > 0:
 			### Buy them! TODO
-			destStation.removeCargoWare(destStation._produces, totalPossibleWaresToBuy)
-			addCargoWare(destStation._produces, totalPossibleWaresToBuy)
+			destStation.cargoBay.removeWare(destStation._produces, totalPossibleWaresToBuy)
+			cargoBay.addWare(destStation._produces, totalPossibleWaresToBuy)
 	pass
 
 func findNewStationToSellTo():
