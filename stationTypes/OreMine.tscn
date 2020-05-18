@@ -14,12 +14,24 @@ vframes = 8
 hframes = 8
 script = ExtResource( 2 )
 produces = ExtResource( 1 )
+cargoSpaceMetersCubed = 500
 
 [node name="Label" type="Label" parent="."]
 margin_left = 10.0
 margin_top = -5.0
 margin_right = 95.0
 margin_bottom = 25.0
+rect_scale = Vector2( 0.5, 0.5 )
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label2" type="Label" parent="."]
+margin_left = 55.9932
+margin_top = -6.25436
+margin_right = 140.993
+margin_bottom = 23.7456
 rect_scale = Vector2( 0.5, 0.5 )
 autowrap = true
 __meta__ = {

@@ -10,4 +10,4 @@ timeToProduceSec = 1.0
 volumePerUnitMetersCubed = 1
 requiredWares = [  ]
 requiredAmt = [  ]
-warePrice = Vector2( 2, 10 )
+warePrice = Vector2( 2, 20 )

@@ -37,8 +37,8 @@ func tick():
 		if currentWork < 0:
 			if _produces.isSatisfiedBy(cargoBay.cargo):
 				currentWork = 0
-			else:
-				print("Cargo bay doesn't satisfy production requirements.")
+			#else:
+			#	print("Cargo bay doesn't satisfy production requirements.")
 		else:
 			currentWork += 1
 		
@@ -47,7 +47,7 @@ func tick():
 			var tmpCargo = cargoBay.cargo
 			if cargoBay.removeSelectWares(_produces.getAllRequired()) >= 0:
 				if cargoBay.addWare(_produces, 1) < 0 :
-					print("Production didn't happened!!!")
+					#print("Production didn't happened!!!")
 					cargoBay.cargo=tmpCargo
 					cargoBay.updateDebugWithCargo()
 				
@@ -127,8 +127,8 @@ func updateSellPrice():
 	var ratio : float = getProducedWareVolume() / float(cargoBay.maxSpaceMC)
 	### Then calculate how much we should sell it for - the more, the less cost.
 	currentSellPrice = _produces.getAdjustedSellPrice(ratio)
-	print(String(getProducedWareVolume())+" / "+String(float(cargoBay.maxSpaceMC)))
-	print(_produces.name + " - ratio: " +String(ratio)+ " : " + String(currentSellPrice))
+	#print(String(getProducedWareVolume())+" / "+String(float(cargoBay.maxSpaceMC)))
+	#print(_produces.name + " - ratio: " +String(ratio)+ " : " + String(currentSellPrice))
 	
 	$Label.text = String(currentSellPrice) + "c\n" + String(cargoBay.cargo)
 	
@@ -138,6 +138,8 @@ func updateBuyPrice():
 		var ware : R_Ware = _produces.requiredWares[i]
 		var ratio : float = getWareVolume(ware) / float(cargoBay.maxSpaceMC)
 		requiredBuyPrice[i] = ware.getAdjustedBuyPrice(ratio)
+	if $Label2:
+		$Label2.text = String(requiredBuyPrice)
 
 func requires(ware:R_Ware) -> bool:
 	return _produces.requires(ware)

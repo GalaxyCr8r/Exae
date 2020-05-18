@@ -41,7 +41,7 @@ func getAdjustedSellPrice(ratio:float) -> float:
 """ Its assumed ratio is a decimal within [0.0, 1.0] """
 func getAdjustedBuyPrice(ratio:float) -> float:
 	var adjusted = warePrice.y - warePrice.x
-	adjusted *= ratio
+	adjusted *= 1.0 - ratio
 	return warePrice.x + adjusted
 
 """ Does the given cargo dictionary fulfill this ware's production requirements? """

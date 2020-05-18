@@ -128,7 +128,7 @@ func getRandomWareName() -> String:
 	if tmpCargo.size() == 0:
 		return ""
 	if tmpCargo.size() == 1:
-		return tmpCargo[tmpCargo.keys().front()]
+		return tmpCargo.keys().front()
 	
 	# Otherwise, pick a random one.
 	var wareNum = randi() % tmpCargo.size()

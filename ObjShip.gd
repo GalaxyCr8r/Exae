@@ -91,8 +91,10 @@ func findStationWithBestDeal(wareName:String):
 	var targetStation = null
 	var entity:Node2D
 	var bestPrice : int = 1
+	var lowestAmt : int = 999
 	## TODO This really should be set to the lowest price of the ware plus some buffer OR the highest price this ware was bought at.
 	## That way this freigher wouldn't sell at a loss.
+	print ("Trying to sell "+wareName)
 	
 	# Find the station with the highest buy price for our ware.
 	for entity in get_parent().get_children():
@@ -104,12 +106,16 @@ func findStationWithBestDeal(wareName:String):
 			
 			# Put these values in variable to help with debugging
 			var requiresThis : bool = station.requiresThisWareName(wareName)
-			var currentPrice : int = station.getBuyPriceName(wareName) ##### TODO, current the AI is not selling eCubes to stations that need it most.
-			if !requiresThis or currentPrice < bestPrice:
-				continue
-			
-			bestPrice = station.currentSellPrice
-			targetStation = entity
+			if requiresThis:
+				var currentPrice : int = station.getBuyPriceName(wareName) ##### TODO, current the AI is not selling eCubes to stations that need it most.
+				print ("Found a place with ("+ String(station.cargoBay.wareNameAmount(wareName)) +") buying for "+String(currentPrice))
+				if currentPrice >= bestPrice:
+					var amt = station.cargoBay.wareNameAmount(wareName)
+					if amt < lowestAmt:
+						print ("PICKED!")
+						bestPrice = currentPrice
+						lowestAmt = amt
+						targetStation = entity
 	if !targetStation:
 		print("WARNING: Couldn't find any stations in-sector.")
 	return targetStation
