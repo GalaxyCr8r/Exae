@@ -130,7 +130,7 @@ func updateSellPrice():
 	#print(String(getProducedWareVolume())+" / "+String(float(cargoBay.maxSpaceMC)))
 	#print(_produces.name + " - ratio: " +String(ratio)+ " : " + String(currentSellPrice))
 	
-	$Label.text = String(currentSellPrice) + "c\n" + String(cargoBay.cargo)
+	$Label.text = String(cargoBay.spaceAvailable()) + "mc\n" + String(currentSellPrice) + "c\n" + String(cargoBay.cargo)
 	
 func updateBuyPrice():
 	### Go through each ware type and update the buy price for it.

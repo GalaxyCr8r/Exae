@@ -1,5 +1,6 @@
 extends ObjShip
 
+export(Array, Resource) var onlyTradeTheseWares = []
 
 func _ready():
 	._ready()
@@ -30,40 +31,49 @@ func tick():
 		if destStation != null:
 			### Buy as much as I can that this station produces 
 			#   but only IF you can find a place to sell to.
-			#tmpStat = findNewStationToSellTo()
-			tmpStat = findStationWithBestDeal(destStation._produces.name)
-			if destStation.hasWareToSell() and tmpStat != null:
-				buyFromStation(destStation)
-				destination = tmpStat
-				state = ShipState.GOING_TO_DEAL
-				return
+			if isWareValidToTrade(destStation._produces):
+				tmpStat = findStationWithBestDeal(destStation._produces.name)
+				if destStation.hasWareToSell() and tmpStat != null:
+					buyFromStation(destStation)
+					destination = tmpStat
+					state = ShipState.GOING_TO_DEAL
+					return
 			
 			### Otherwise, try to find the most needed ware to supply this station.
 			var tmpWare:R_Ware = destStation.mostNeededRequiredWare()
 			# And sometimes, pick a random ware instead
-			if randi() % 10 < 5:
+			if randi() % 10 < 5 or !isWareValidToTrade(tmpWare):
 				tmpWare = destStation.pickRandomRequiredWare()
 			
-			if tmpWare != null:
+			if tmpWare != null && isWareValidToTrade(tmpWare):
 				wareName = tmpWare.name
 				tmpStat = findCheapestStation(wareName)
 		
 		# Pick a random ware in our inventory to sell
 		if wareName == "":
 			wareName = cargoBay.getRandomWareName()
-			if wareName != "":
+			if wareName != "": # Don't need to check if its valid to trade since its already in our cargobay!
 				tmpStat = findStationWithBestDeal(wareName)
 		
+		# If we got here without finding a station that means we should go find
+		# a new station on our own.
 		if tmpStat == null:
-			# Just find the closest station.
-			tmpStat = findClosestStation()
+			if onlyTradeTheseWares.size() == 1:
+				# Find a station that has the ware we trade in.
+				tmpStat = findStationWithBestDeal(onlyTradeTheseWares[0])
+			elif onlyTradeTheseWares.size() > 0:
+				# Find a station that has a random ware we trade in.
+				tmpStat = findStationWithBestDeal(onlyTradeTheseWares[randi() % onlyTradeTheseWares.size()])
+			else:
+				# Just find the closest station.
+				tmpStat = findClosestStation()
 		
 		if tmpStat != null:
 			# If we found a station to buy or sell at, go to it!
 			destination = tmpStat
 			state = ShipState.GOING_TO_DEAL
 		else:
-			print("WARNING: Cannot find place to sell!") # Currently this should never happen.
+			print("ERROR: Cannot find place to sell!") # Currently this should never happen.
 
 func arrivedAtDestination():
 	var destStation : ObjStation = destination
@@ -114,7 +124,7 @@ func buyFromStation(destStation:ObjStation):
 			destStation.updateWarePrice()
 	pass
 
-func findNewStationToSellTo():
+func findNewStationToSellTo():#### TODO: Determine if this is OBE??
 	### Its assumed that whomever calls this actually HAS the ware that destination._produces!
 	#if !cargoBay.has(destination._produces):
 		#return
@@ -138,3 +148,11 @@ func findNewStationToSellTo():
 	if !targetStation:
 		print("WARNING: Couldn't find any stations in-sector.")
 	return targetStation
+
+func isWareValidToTrade(tradeWare:R_Ware) -> bool:
+	if onlyTradeTheseWares.size() == 0:
+		return true
+	for ware in onlyTradeTheseWares:
+		if ware.name == tradeWare.name:
+			return true
+	return false

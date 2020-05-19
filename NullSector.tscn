@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://stationTypes/OreMine.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Timer.gd" type="Script" id=2]
 [ext_resource path="res://stationTypes/SolarPowerPlant.tscn" type="PackedScene" id=3]
 [ext_resource path="res://stationTypes/MetalRefinery.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Freighter.tscn" type="PackedScene" id=5]
+[ext_resource path="res://wareTypes/R_EnergyCubes.tres" type="Resource" id=6]
 
 [node name="NullSector" type="Node2D"]
 
@@ -47,4 +48,9 @@ position = Vector2( -242.296, -135.989 )
 
 [node name="SolarPowerPlant3" parent="." instance=ExtResource( 3 )]
 position = Vector2( 206.704, 0.181503 )
+
+[node name="Freighter3" parent="." instance=ExtResource( 5 )]
+position = Vector2( -128.821, -11.166 )
+frame = 18
+onlyTradeTheseWares = [ ExtResource( 6 ) ]
 [connection signal="timeout" from="Timer" to="Timer" method="_on_Timer_timeout"]
