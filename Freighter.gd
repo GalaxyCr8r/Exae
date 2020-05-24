@@ -7,6 +7,8 @@ func _ready():
 	if destination == null:
 		print("ERROR")
 	
+	# TODO validate "onlyTradeTheseWares"
+	
 	## Freighters should find the closest station and start trading
 	### TODO: Check if the station is friendly before considering
 	var targetStation = findClosestStation()
@@ -41,9 +43,10 @@ func tick():
 			
 			### Otherwise, try to find the most needed ware to supply this station.
 			var tmpWare:R_Ware = destStation.mostNeededRequiredWare()
-			# And sometimes, pick a random ware instead
-			if randi() % 10 < 5 or !isWareValidToTrade(tmpWare):
-				tmpWare = destStation.pickRandomRequiredWare()
+			if tmpWare != null:
+				# And sometimes, pick a random ware instead
+				if randi() % 10 < 5 or !isWareValidToTrade(tmpWare):
+					tmpWare = destStation.pickRandomRequiredWare()
 			
 			if tmpWare != null && isWareValidToTrade(tmpWare):
 				wareName = tmpWare.name
@@ -60,10 +63,10 @@ func tick():
 		if tmpStat == null:
 			if onlyTradeTheseWares.size() == 1:
 				# Find a station that has the ware we trade in.
-				tmpStat = findStationWithBestDeal(onlyTradeTheseWares[0])
+				tmpStat = findStationWithBestDeal(onlyTradeTheseWares[0].name)
 			elif onlyTradeTheseWares.size() > 0:
 				# Find a station that has a random ware we trade in.
-				tmpStat = findStationWithBestDeal(onlyTradeTheseWares[randi() % onlyTradeTheseWares.size()])
+				tmpStat = findStationWithBestDeal(onlyTradeTheseWares[randi() % onlyTradeTheseWares.size()].name)
 			else:
 				# Just find the closest station.
 				tmpStat = findClosestStation()
@@ -101,7 +104,9 @@ func sellCargoToStation(destStation:ObjStation):
 		for i in range(0, destStation._produces.requiredWares.size()):
 			var reqWare:R_Ware = destStation._produces.requiredWares[i]
 			if reqWare.name == wareName:
-				### SELL IT! TODO Make it smarter, this will currently fail if the station can't buy all of it.
+				if !destStation.doesStationWantWare(reqWare):
+					continue
+				
 				if destStation.cargoBay.addWare(reqWare, cargoBay.wareNameAmount(wareName)) >= 0:
 					cargoBay.removeWare(reqWare, cargoBay.wareNameAmount(wareName))
 					destStation.updateWarePrice()
@@ -132,6 +137,7 @@ func findNewStationToSellTo():#### TODO: Determine if this is OBE??
 	### Find a station that needs the ware we just purchased
 	var targetStation = null
 	var entity:Node2D
+	var highestPrice : int = 0 ### TODO: Find ALL stations with the highest price and then pick one randomly.
 	for entity in get_parent().get_children():
 		if entity.is_in_group("stations"):
 			## Ignore it if it's the current destination!

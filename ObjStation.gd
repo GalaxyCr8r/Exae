@@ -45,6 +45,12 @@ func tick():
 		if currentWork >= _produces.timeToProduceSec:
 			currentWork = -1
 			var tmpCargo = cargoBay.cargo
+			
+			# Is there room for more of the produced ware?
+			var ratio : float = getRatio(_produces)
+			if ratio > 0.9:
+				return
+			
 			if cargoBay.removeSelectWares(_produces.getAllRequired()) >= 0:
 				if cargoBay.addWare(_produces, 1) < 0 :
 					#print("Production didn't happened!!!")
@@ -136,10 +142,29 @@ func updateBuyPrice():
 	### Go through each ware type and update the buy price for it.
 	for i in range(0, requiredBuyPrice.size()):
 		var ware : R_Ware = _produces.requiredWares[i]
-		var ratio : float = getWareVolume(ware) / float(cargoBay.maxSpaceMC)
+		var ratio : float = getRatio(ware)
 		requiredBuyPrice[i] = ware.getAdjustedBuyPrice(ratio)
 	if $Label2:
 		$Label2.text = String(requiredBuyPrice)
 
+func doesStationWantWare(ware:R_Ware) -> bool:
+	if !requires(ware):
+		return false
+	var ratio : float = getRatio(ware)
+	if ratio == 0:
+		return true
+	if ratio > 0.85:
+	#if getWareVolume(ware) / (float(cargoBay.maxSpaceMC) * ratio) < ratio * 0.66:
+		return false
+	return true
+
 func requires(ware:R_Ware) -> bool:
 	return _produces.requires(ware)
+
+func getRatio(ware:R_Ware) -> int:
+	var percentOfCargoUsedByEachWare : float = 1.0 / numOfWaresNeededInCargo()
+	var volumePerWare = (float(cargoBay.maxSpaceMC) * percentOfCargoUsedByEachWare)
+	return getWareVolume(ware) / volumePerWare
+
+func numOfWaresNeededInCargo() -> int:
+	return _produces.requiredWares.size() + 1 ## Plus one because of the ware producing

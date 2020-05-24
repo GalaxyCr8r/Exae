@@ -18,18 +18,21 @@ position = Vector2( -180.684, -113.043 )
 color = Color( 1, 0, 0, 0.501961 )
 polygon = PoolVector2Array( -135.666, -43.7736, 25.3044, -90.4152, 138.727, -29.8836, 69.6963, 64.6279, -53.0759, 76.6734, -4.8936, 13.2025 )
 
-[node name="Timer" type="Timer" parent="."]
+[node name="TickTimer" type="Timer" parent="."]
 autostart = true
 script = ExtResource( 2 )
 
 [node name="OreMine" parent="." instance=ExtResource( 1 )]
-position = Vector2( -34.9073, -60.798 )
+position = Vector2( -202.419, -52.1522 )
 
 [node name="SolarPowerPlant" parent="." instance=ExtResource( 3 )]
 position = Vector2( -136.09, 86.2338 )
 
 [node name="MetalRefinery" parent="." instance=ExtResource( 4 )]
 position = Vector2( 23.4518, 56.3789 )
+
+[node name="MetalRefinery2" parent="." instance=ExtResource( 4 )]
+position = Vector2( -220.25, 30.982 )
 
 [node name="SolarPowerPlant2" parent="." instance=ExtResource( 3 )]
 position = Vector2( 60.9248, -85.1008 )
@@ -38,10 +41,10 @@ position = Vector2( 60.9248, -85.1008 )
 position = Vector2( -96.2844, 68.7447 )
 
 [node name="Freighter2" parent="." instance=ExtResource( 5 )]
-position = Vector2( 59.3066, -53.5831 )
+position = Vector2( -196.283, -131.395 )
 
 [node name="OreMine2" parent="." instance=ExtResource( 1 )]
-position = Vector2( 170.538, 114.738 )
+position = Vector2( -93.1574, -128.964 )
 
 [node name="OreMine3" parent="." instance=ExtResource( 1 )]
 position = Vector2( -242.296, -135.989 )
@@ -50,7 +53,12 @@ position = Vector2( -242.296, -135.989 )
 position = Vector2( 206.704, 0.181503 )
 
 [node name="Freighter3" parent="." instance=ExtResource( 5 )]
-position = Vector2( -128.821, -11.166 )
+position = Vector2( 91.6456, -80.332 )
 frame = 18
 onlyTradeTheseWares = [ ExtResource( 6 ) ]
-[connection signal="timeout" from="Timer" to="Timer" method="_on_Timer_timeout"]
+
+[node name="Freighter4" parent="." instance=ExtResource( 5 )]
+position = Vector2( 226.735, 27.7399 )
+frame = 18
+onlyTradeTheseWares = [ ExtResource( 6 ) ]
+[connection signal="timeout" from="TickTimer" to="TickTimer" method="_on_Timer_timeout"]

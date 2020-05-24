@@ -1,0 +1,95 @@
+@startuml
+left to right direction
+
+package "Natural Resources" {
+
+boundary ECubes
+ECubes --> Everything
+
+package "Asteroid Field" {
+	boundary Ore
+	boundary Silicon
+}
+
+package "Nebulae" {
+	boundary Methane
+	boundary Hydrogen
+}
+
+}
+
+package "Refined Goods" {
+
+control "Sheet Metal" as metal
+Ore --> metal
+
+entity "Volitile Mixture" as vm
+Hydrogen --> vm
+
+entity "Super Coolant" as sc
+Methane --> sc
+
+entity Microchips
+Silicon --> Microchips
+
+}
+
+package "Intermediate Wares" {
+
+database "Plasma Capacitors" as pc
+
+database "Hull Structure" as hs
+
+database "Armor Plating" as ap
+
+database "Reactor Components" as rc
+
+} 
+
+package "Advanced Wares" {
+
+database "Engine Components" as ec
+
+database "Weapon Components" as wc
+
+}
+
+package "Final Goods" {
+
+collections "Blaster Cannons" as bc
+collections "Ships" as sh
+collections "Space Stations" as ssh
+
+}
+
+actor "Shipyard" as shy
+
+
+
+metal --> pc
+metal --> hs
+metal --> ap
+
+pc --> wc
+Microchips --> wc
+sc --> wc
+
+Microchips --> rc
+vm --> rc
+metal --> rc
+
+rc --> ec
+sc --> ec
+
+wc --> bc
+bc --> shy
+
+hs --> sh
+ap --> sh
+ec --> sh
+sh --> shy
+
+hs --> ssh
+ap --> ssh
+ssh --> shy
+@enduml
